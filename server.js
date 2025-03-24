@@ -3,7 +3,8 @@ const fs = require('fs');
 const path = require('path');
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 10000;
+
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public'))); // Servir archivos estáticos desde /public
@@ -14,4 +15,4 @@ app.post('/log-location', (req, res) => {
     res.sendStatus(200);
 });
 
-app.listen(PORT, () => console.log(`Servidor corriendo en http://localhost:${PORT}`));
+app.listen(PORT, () => console.log(`Servidor corriendo en el puerto ${PORT}`));
