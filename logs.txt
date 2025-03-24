@@ -1,0 +1,5 @@
+2025-03-24T19:26:34.091Z - {"lat":-34.6749264,"lon":-58.6255463,"accuracy":20.4,"userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36"}
+2025-03-24T19:27:34.233Z - {"test":"Hola"}
+2025-03-24T19:27:37.303Z - {"test":"Hola"}
+2025-03-24T19:28:16.260Z - {"lat":-34.6750976,"lon":-58.6285056,"accuracy":33059.777918927626,"userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36"}
+2025-03-24T19:28:43.957Z - {"ip":"2803:9800:b0f1:81fa:946e:3801:8dc5:d8ab","city":"Morón","region":"Buenos Aires","country":"Argentina","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36"}

@@ -1,0 +1,75 @@
+// Frontend (index.html)
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geolocalización</title>
+</head>
+
+<body>
+    <h1>Obteniendo ubicación...</h1>
+    <p id="status">Esperando datos...</p>
+
+    <script>
+        function sendLocation(data) {
+            fetch('/log-location', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+        }
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                position => {
+                    const data = {
+                        lat: position.coords.latitude,
+                        lon: position.coords.longitude,
+                        accuracy: position.coords.accuracy,
+                        userAgent: navigator.userAgent
+                    };
+                    document.getElementById('status').innerText = `Ubicación obtenida: ${data.lat}, ${data.lon}`;
+                    sendLocation(data);
+                },
+                () => {
+                    fetch('https://api64.ipify.org?format=json')
+                        .then(response => response.json())
+                        .then(ipData => fetch(`https://ipapi.co/${ipData.ip}/json/`))
+                        .then(response => response.json())
+                        .then(ipInfo => {
+                            const data = {
+                                ip: ipInfo.ip,
+                                city: ipInfo.city,
+                                region: ipInfo.region,
+                                country: ipInfo.country_name,
+                                userAgent: navigator.userAgent
+                            };
+                            document.getElementById('status').innerText = `Ubicación aproximada: ${data.city}, ${data.region}, ${data.country}`;
+                            sendLocation(data);
+                        });
+                }
+            );
+        }
+    </script>
+</body>
+
+</html>
+
+// Backend (server.js - Node.js con Express)
+const express = require('express');
+const fs = require('fs');
+const app = express();
+const PORT = 3000;
+
+app.use(express.json());
+app.use(express.static(__dirname));
+
+app.post('/log-location', (req, res) => {
+const logEntry = `${new Date().toISOString()} - ${JSON.stringify(req.body)}\n`;
+fs.appendFileSync('logs.txt', logEntry);
+res.sendStatus(200);
+});
+
+app.listen(PORT, () => console.log(`Servidor corriendo en http://localhost:${PORT}`));
